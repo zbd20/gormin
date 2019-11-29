@@ -1,0 +1,13 @@
+addr: 8080
+
+mode: debug
+
+db:
+  host: "159.138.87.227:3306"
+  user: root
+  password: Shareit@2018
+  dbname: hawkeye
+  log: false
+  maxidleconns: 10
+  maxopenconns: 100
+
