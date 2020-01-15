@@ -2,6 +2,7 @@ package router
 
 import (
 	"fmt"
+	"github.com/zbd20/gormin/src/middleware"
 	"net/http"
 	"time"
 
@@ -30,7 +31,11 @@ func NewRouter() *Router {
 
 	// running mode(debug/test/release)
 	gin.SetMode(serverConfig.Mode)
+	gin.ForceConsoleColor()
+
 	eng := gin.Default()
+
+	eng.Use(middleware.Page(), middleware.LoggerToFile())
 
 	bc := apis.NewBaseController(eng, mysqlClient)
 
