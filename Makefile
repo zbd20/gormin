@@ -5,14 +5,15 @@ FIRST_GOPATH := $(firstword $(subst :, ,$(shell $(GO) env GOPATH)))
 
 pkgs          = $(shell $(GO) list ./... | grep -v /vendor/)
 
-PREFIX                  ?= $(shell pwd)
-DIRNAME                 ?= $(shell dirname $(shell pwd))
+PREFIX       ?= $(shell pwd)
+DIRNAME      ?= $(shell dirname $(shell pwd))
 
-#TAG                     ?= $(shell date +%s)
-TAG                     ?= $(shell git rev-parse --short HEAD)
+#TAG          ?= $(shell date +%s)
+TAG          ?= $(shell git rev-parse --short HEAD)
+TAGS		 ?= prod
 
 
-RUN_ENV                 ?= test
+RUN_ENV      ?= test
 
 style:
 	@echo ">> checking code style"
@@ -28,9 +29,9 @@ vet:
 
 build:
 	@echo ">> go build ..."
-	@CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build --ldflags -w -o gormin main.go
+	@CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -tags ${TAGS} --ldflags -w -o gormin main.go
 
-doc:
+swagger:
 	@echo ">> swag init"
 	@swag init
 

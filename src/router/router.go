@@ -2,24 +2,25 @@ package router
 
 import (
 	"fmt"
-	"github.com/zbd20/gormin/src/middleware"
 	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/swaggo/gin-swagger/swaggerFiles"
 	log "github.com/zbd20/go-utils/blog"
 	_ "github.com/zbd20/gormin/docs"
 	"github.com/zbd20/gormin/src/apis"
 	"github.com/zbd20/gormin/src/config"
 	"github.com/zbd20/gormin/src/db"
+	"github.com/zbd20/gormin/src/middleware"
+	"github.com/zbd20/gormin/src/models"
 )
 
 type Router struct {
 	eng *gin.Engine
 	bc  *apis.BaseController
 }
+
+var swagHandler gin.HandlerFunc
 
 func NewRouter() *Router {
 	serverConfig := config.GetConfig()
@@ -31,7 +32,8 @@ func NewRouter() *Router {
 
 	// running mode(debug/test/release)
 	gin.SetMode(serverConfig.Mode)
-	gin.ForceConsoleColor()
+	// 强制日志颜色化
+	//gin.ForceConsoleColor()
 
 	eng := gin.Default()
 
@@ -44,8 +46,14 @@ func NewRouter() *Router {
 		bc:  bc,
 	}
 
-	swaggerURL := ginSwagger.URL("http://127.0.0.1:8080/swagger/doc.json")
-	eng.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, swaggerURL))
+	// 注册gorm回调
+	models.RegisterCallbacks(mysqlClient)
+	// 自动创建表
+	models.AutoCreateTable(mysqlClient)
+
+	if swagHandler != nil {
+		eng.GET("/swagger/*any", swagHandler)
+	}
 
 	return r
 }

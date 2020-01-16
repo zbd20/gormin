@@ -5,9 +5,12 @@ mode: debug
 db:
   host: "x.x.x.x:3306"
   user: xxx
-  password: xxxx
-  dbname: xxx
-  log: false
+  password: xxxxxx
+  dbname: xxxx
+  log: true
   maxidleconns: 10
   maxopenconns: 100
 
+log:
+  path: "./"
+  name: "test.log"

@@ -14,7 +14,7 @@ type hiController struct {
 func newHiController(bc *BaseController) *hiController {
 	hc := &hiController{bc}
 
-	hc.rg.GET("hi", hc.Get)
+	hc.rg.GET("/hi", hc.Get)
 
 	return hc
 }
