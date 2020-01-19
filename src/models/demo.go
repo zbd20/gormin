@@ -18,3 +18,14 @@ type User struct {
 func (u User) TableName() string {
 	return "sgt_test_auto_create_table"
 }
+
+
+type Login struct {
+	ID       int    `json:"id" gorm:"column:id"`
+	Username string `form:"username" json:"username" binding:"required"`
+	Password string `form:"password" json:"password" binding:"required"`
+}
+
+func (l Login) TableName() string {
+	return "sgt_test_user"
+}

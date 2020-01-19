@@ -22,6 +22,7 @@ func NewBaseController(eng *gin.Engine, db *gorm.DB) *BaseController {
 	}
 
 	newHiController(bc)
+	newDemoController(bc)
 
 	return bc
 }

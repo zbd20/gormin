@@ -36,8 +36,8 @@ func NewRouter() *Router {
 	//gin.ForceConsoleColor()
 
 	eng := gin.Default()
-
-	eng.Use(middleware.Page(), middleware.LoggerToFile())
+	auth := middleware.Jwt(mysqlClient)
+	eng.Use(middleware.Page(),auth.MiddlewareFunc())
 
 	bc := apis.NewBaseController(eng, mysqlClient)
 
@@ -49,7 +49,7 @@ func NewRouter() *Router {
 	// 注册gorm回调
 	models.RegisterCallbacks(mysqlClient)
 	// 自动创建表
-	models.AutoCreateTable(mysqlClient)
+	//models.AutoCreateTable(mysqlClient)
 
 	if swagHandler != nil {
 		eng.GET("/swagger/*any", swagHandler)

@@ -9,7 +9,9 @@ import (
 )
 
 const (
-	HiErr string = "400-10000"
+	HiErr         string = "400-10000"
+	InvalidParams string = "400-10001"
+	AuthFailed    string = "400-10002"
 )
 
 type RespResult struct {
